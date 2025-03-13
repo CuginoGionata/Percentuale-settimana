@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Settimana Lavorativa</title>
+    <style>
+        body { font-family: Arial, sans-serif; text-align: center; padding: 20px; }
+        #percentuale { font-size: 2em; font-weight: bold; }
+    </style>
+</head>
+<body>
+    <h1>Settimana completata al:</h1>
+    <div id="percentuale">0%</div>
+    <script>
+        function calcolaPercentuale() {
+            let now = new Date();
+            let giorno = now.getDay();
+            let ora = now.getHours() + now.getMinutes() / 60 + now.getSeconds() / 3600;
+
+            let oreSettimanali = 40;
+            let oreLavorate = 0;
+            let orari = {
+                1: [[8.5, 12.5], [14, 18]],
+                2: [[8.5, 12.5], [14, 18]],
+                3: [[8.5, 12.5], [14, 18]],
+                4: [[8.5, 12.5], [14, 18]],
+                5: [[8.5, 12.5], [14, 18]],
+            };
+
+            for (let i = 1; i < giorno; i++) {
+                oreLavorate += 8;
+            }
+
+            if (orari[giorno]) {
+                orari[giorno].forEach(range => {
+                    if (ora >= range[1]) {
+                        oreLavorate += range[1] - range[0];
+                    } else if (ora > range[0]) {
+                        oreLavorate += ora - range[0];
+                    }
+                });
+            }
+
+            let percentuale = (oreLavorate / oreSettimanali) * 100;
+            document.getElementById("percentuale").innerText = percentuale.toFixed(2) + "%";
+        }
+
+        calcolaPercentuale();
+        setInterval(calcolaPercentuale, 1000);
+    </script>
+</body>
+</html>
